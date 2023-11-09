@@ -1,0 +1,22 @@
+<h1>Histórico de vendas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Produto</th>
+      <th>Quantidade</th>
+      <th>Preço</th>
+      <th>Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% current_user.vendas.each do |venda| %>
+      <tr>
+        <td><%= venda.produto.nome %></td>
+        <td><%= venda.quantidade %></td>
+        <td><%= number_to_currency(venda.produto.preco) %></td>
+        <td><%= venda.data.strftime('%d/%m/%Y %H:%M') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,69 @@
+<h1>Controle de Estoque</h1>
+
+<% if user_signed_in? %> 
+  <hr>
+ <div> Welcome <%= current_user.email %> </div> 
+ <div> Carteira <%= @users.first.carteira.saldo %> </div> 
+  <hr>
+  <%= button_to "Sign out", destroy_user_session_path, method: :delete %> 
+  <hr>
+<% else %>
+  <hr>
+  <%= button_to "Sign in", new_user_session_path %> 
+    <hr>
+<% end %>
+
+
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Quantidade</th>
+      <th>Preço</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @produtos.each do |produto| %>
+      <tr>
+        <td><%= produto.nome %></td>
+        <td><%= produto.quantidade %></td>
+        <td><%= number_to_currency(produto.preco) %></td>
+        <td>
+           <hr>
+
+            <%= form_for produto, url: vender_produto_path(produto), method: :post, class: 'vender-form' do |f| %>
+                <div class="field">
+                <%= f.label :quantidade %>
+                <%= f.number_field :quantidade, class: 'form-control' %>
+                </div>
+                <%= f.submit 'vender', class: 'btn btn-primary' %>
+            <% end %>
+           
+          
+            <%= form_for produto, url: comprar_produto_path(produto), method: :post, class: 'comprar-form' do |f| %>
+                <div class="field">
+                <%= f.label :quantidade %>
+                <%= f.number_field :quantidade, class: 'form-control' %>
+                </div>
+                <%= f.submit 'Comprar', class: 'btn btn-primary' %>
+            <% end %>
+
+            <%= form_for produto, url: adicionar_ao_carrinho_path(produto), method: :post, class: 'adicionar-ao-carrinho-form' do |f| %>
+              <div class="field">
+                <%= f.label :quantidade %>
+                <%= f.number_field :quantidade, class: 'form-control' %>
+              </div>
+              <%= f.submit 'Adicionar ao Carrinho', class: 'btn btn-primary' %>
+            <% end %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "New produto", new_produto_path %>

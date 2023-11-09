@@ -1,0 +1,32 @@
+<h1>New produto</h1>
+
+<%= form_with model: @produto do |form| %>
+  <div>
+    <%= form.label :nome %><br>
+    <%= form.text_field :nome %>
+    <% @produto.errors.full_messages_for(:nome).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :quantidade %><br>
+    <%= form.text_area :quantidade %><br>
+    <% @produto.errors.full_messages_for(:quantidade).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :preco %><br>
+    <%= form.text_area :preco %><br>
+    <% @produto.errors.full_messages_for(:preco).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+

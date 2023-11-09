@@ -1,0 +1,36 @@
+<h1>Carrinho de Compras</h1>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Produto</th>
+      <th>Quantidade</th>
+      <th>Preço</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% current_user.carrinho.carrinho_itens.each do |carrinho_item| %>
+      <tr>
+        <td><%= carrinho_item.produto.nome %></td>
+        <td><%= carrinho_item.quantidade %></td>
+        <td><%= number_to_currency(carrinho_item.produto.preco) %></td>
+        <td>
+          <%= link_to 'Remover do Carrinho', remover_do_carrinho_path(carrinho_item), method: :delete, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
