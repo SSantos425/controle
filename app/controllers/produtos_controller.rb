@@ -54,12 +54,24 @@ class ProdutosController < ApplicationController
     def adicionar_ao_carrinho
         produto = Produto.find(params[:id])
         quantidade_adicionada = params[:produto][:quantidade].to_i
-
-    
         carrinho = current_user.carrinho
 
+        #verificia se exise senao cria e adiciona a quantidade
+
+
         carrinho_item = carrinho.carrinho_itens.find_or_initialize_by(produto_id: produto.id)
-        carrinho_item.quantidade += quantidade_adicionada
+        if carrinho_item.nil?
+            carrinho_item = CarrinhoItem.new(carrinho: carrinho, produto: produto, quantidade: quantidade_adicionada)
+            carrinho_item.save
+            carrinho_item.quantidade = carrinho_item.quantidade + quantidade_adicionada
+        else
+            carrinho_item.quantidade = carrinho_item.quantidade + quantidade_adicionada
+        end
+        
+            
+        
+       
+        
 
         if carrinho_item.save
             flash[:notice] = "Produto adicionado ao carrinho."
@@ -78,6 +90,12 @@ class ProdutosController < ApplicationController
         else
         flash[:alert] = "Erro ao remover o produto do carrinho."
         end
+        redirect_to produtos_path
+    end
+
+    def destroy
+        produto = Produto.find(params[:id]) 
+        produto.destroy
         redirect_to produtos_path
     end
 
